@@ -550,6 +550,9 @@ html, body { overflow-x: clip; }
 .pzin img.wide { width: auto; height: 100%; }
 .page { position: relative; z-index: 0; container-type: inline-size; }
 .collage { container-type: inline-size; }
+/* stickers placed on the collage fall in with the other pieces (translate/rotate compose with their own transform) */
+.site.entered .collage > .deco { animation: deco-settle 1.1s cubic-bezier(.3,.6,.35,1) .15s both; }
+@keyframes deco-settle { 0% { translate: 0 -115vh; rotate: -8deg; } 72% { translate: 0 8px; rotate: .9deg; } 88% { translate: 0 -3px; rotate: -.3deg; } 100% { translate: 0 0; rotate: 0deg; } }
 .deco { position: absolute; pointer-events: none; transform-origin: 50% 50%; }
 .deco img { display: block; width: 100%; height: auto; }
 .deco.ink img, .dtray .ink img { filter: var(--ink-filter, none); }
