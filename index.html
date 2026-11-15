@@ -533,13 +533,25 @@ html { scroll-behavior: smooth; }
     tune.forEach(([k, b]) => { note(N[k], t, beat * b); t += beat * b; });
     loopTimer = setTimeout(() => { if (playing) playLoop(); }, (t - ac.currentTime) * 1000 + 600);
   }
-  function stopTune() { playing = false; clearTimeout(loopTimer); rec.classList.remove('spin'); rec.setAttribute('aria-pressed', 'false'); if (ac) ac.suspend(); }
-  new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting && playing) stopTune(); })).observe(rec);
+  /* the song plays through a hidden YouTube player; if YouTube can't be reached or the video can't be embedded, fall back to the music-box tune */
+  const YT_ID = 'NmvVhovjJI0'; let yt = null, ytReady = false, ytFailed = false, ytWant = false;
+  (() => { const box = document.createElement('div'); box.id = 'ytbox'; box.setAttribute('aria-hidden', 'true');
+    box.style.cssText = 'position:fixed;left:-10px;bottom:-10px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none';
+    box.innerHTML = '<div id="ytplayer"></div>'; document.body.appendChild(box);
+    window.onYouTubeIframeAPIReady = () => { try { yt = new YT.Player('ytplayer', { width: 1, height: 1, videoId: YT_ID,
+      playerVars: { playsinline: 1, controls: 0, loop: 1, playlist: YT_ID, rel: 0 },
+      events: { onReady: () => { ytReady = true; if (ytWant) yt.playVideo(); },
+                onError: () => { ytFailed = true; if (playing) { ytWant = false; startSynth(); } } } }); } catch (e) { ytFailed = true; } };
+    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; s.onerror = () => { ytFailed = true; }; document.head.appendChild(s); })();
+  function startSynth() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); ac.resume(); } catch (e) {} if (ac) playLoop(); }
+  function stopTune() { playing = false; ytWant = false; clearTimeout(loopTimer); rec.classList.remove('spin'); rec.setAttribute('aria-pressed', 'false'); if (ac) ac.suspend(); try { if (yt && ytReady) yt.pauseVideo(); } catch (e) {} }
   rec.addEventListener('click', () => {
     if (playing) return stopTune();
-    try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); ac.resume(); } catch (e) {}
     playing = true; rec.classList.add('spin'); rec.setAttribute('aria-pressed', 'true');
-    if (ac) playLoop();
+    try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); ac.resume(); } catch (e) {}
+    if (!ytFailed) { ytWant = true; if (yt && ytReady) { try { yt.unMute(); yt.setVolume(80); yt.playVideo(); } catch (e) { startSynth(); } }
+      else setTimeout(() => { if (playing && ytWant && !ytReady) { ytFailed = true; ytWant = false; startSynth(); } }, 3000); }
+    else startSynth();
   });
 })();
 </script>
