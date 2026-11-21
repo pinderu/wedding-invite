@@ -147,7 +147,7 @@ img, video { display: block; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .tap { left: 15%; top: 39%; width: 27%; aspect-ratio: 1; overflow: visible; z-index: 5; pointer-events: none; }
 .tap text { fill: var(--ivory); font: 600 7px var(--caps); letter-spacing: .16em; paint-order: stroke; stroke: rgba(0,0,0,.55); stroke-width: .6px; }
-.tap .tap-ja { font-family: "Zen Kaku Gothic New", sans-serif; font-size: 7px; letter-spacing: .06em; }
+.tap .tap-ja { font-family: "Zen Kaku Gothic New", sans-serif; font-size: 7.4px; letter-spacing: .12em; }
 
 .countk { margin: 4px 0 12px; font-weight: 600; }
 .count { display: flex; align-items: flex-start; justify-content: center; gap: clamp(6px, 2.4vw, 16px); }
@@ -348,7 +348,7 @@ html { scroll-behavior: smooth; }
         <button class="record" id="record" type="button" aria-pressed="false" aria-label="Tap to play / タップして音楽を再生する">
           <span class="lbl"><span>JOHN &amp; RINA</span><span>02 · 28 · 2027</span></span>
         </button>
-        <svg class="tap" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="tapArc" d="M11.5 50A38.5 38.5 0 0 0 88.5 50"/></defs><text lang="en" class="tap-en"><textPath href="#tapArc" startOffset="50%" text-anchor="middle">TAP TO PLAY</textPath></text><text lang="ja" class="tap-ja"><textPath href="#tapArc" startOffset="50%" text-anchor="middle">タップして音楽を再生する</textPath></text></svg>
+        <svg class="tap" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="tapArc" d="M11.5 50A38.5 38.5 0 0 0 88.5 50"/><path id="tapArcIn" d="M20.5 50A29.5 29.5 0 0 0 79.5 50"/></defs><text lang="en" class="tap-en"><textPath href="#tapArc" startOffset="50%" text-anchor="middle">TAP TO PLAY</textPath></text><text lang="ja" class="tap-ja"><textPath href="#tapArcIn" startOffset="50%" text-anchor="middle">タップして</textPath></text><text lang="ja" class="tap-ja"><textPath href="#tapArc" startOffset="50%" text-anchor="middle">音楽を再生する</textPath></text></svg>
       </div>
 
       <p class="caps countk"><span lang="en">We hope you can join us in…</span><span lang="ja">披露宴の日まで あと</span></p>
